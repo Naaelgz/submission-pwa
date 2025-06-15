@@ -22,9 +22,10 @@
     />
     <title>App</title>
     <script type="module" src="/scripts/index.js"></script>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.webmanifest" />
 </head>
   <body>
+    
   <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Lewati ke konten utama</a>
     <header class="main-header">
       <button class="skip-to-content">Skip to main content</button>
@@ -33,10 +34,6 @@
         <ul id="nav-list" class="nav-list">
   <button class="create-story__button" onclick="window.location.hash = '#/create-story'">
     <p>Create Story</p>
-  </button>
-  <button id="subscribe-btn" class="subscribe-button">
-    <i class="fa-solid fa-bell"></i>
-    <p>Subscribe</p>
   </button>
   <li><a href="#/">Home</a></li>
   <li><a href="#/save">Save Story</a></li>

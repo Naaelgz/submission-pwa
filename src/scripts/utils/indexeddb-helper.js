@@ -18,20 +18,44 @@ function getDB() {
 
 export async function saveStory(story) {
   const db = await getDB();
-  const tx = db.transaction(STORE_NAME, 'readwrite');
-  tx.objectStore(STORE_NAME).put(story);
-  return tx.complete;
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.put(story);
+
+    request.onsuccess = () => {
+      console.log('[IndexedDB] Story saved:', story);
+      resolve(true);
+    };
+    request.onerror = () => {
+      console.error('[IndexedDB] Failed to save story:', request.error);
+      reject(request.error);
+    };
+  });
 }
+
 
 export async function getAllStories() {
   const db = await getDB();
-  const tx = db.transaction(STORE_NAME, 'readonly');
-  return tx.objectStore(STORE_NAME).getAll();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.getAll();
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
 }
+
 
 export async function deleteStory(id) {
   const db = await getDB();
-  const tx = db.transaction(STORE_NAME, 'readwrite');
-  tx.objectStore(STORE_NAME).delete(id);
-  return tx.complete;
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.delete(id);
+
+    request.onsuccess = () => resolve(true);
+    request.onerror = () => reject(request.error);
+  });
 }

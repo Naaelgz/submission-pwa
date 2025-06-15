@@ -18,6 +18,7 @@ export async function isNotificationAvailable() {
 }
 
 export async function subscribeUser() {
+
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') {
     alert('Permission denied!');
@@ -25,28 +26,37 @@ export async function subscribeUser() {
   }
 
   const registration = await navigator.serviceWorker.ready;
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey,
+  });
 
-  try {
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey,
-    });
+  const { endpoint, keys } = subscription.toJSON();
+  const payload = {
+    endpoint,
+    keys: {
+      p256dh: keys.p256dh,
+      auth: keys.auth,
+    },
+  };
 
-    const token = localStorage.getItem('accessToken') || '';
-    await fetch('https://story-api.dicoding.dev/v1/notifications/subscribe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(subscription),
-    });
+  const token = localStorage.getItem('jwtToken') || '';
+  const response = await fetch('https://story-api.dicoding.dev/v1/notifications/subscribe', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
 
-    alert('Berhasil subscribe!');
-  } catch (err) {
-    alert('Gagal subscribe: ' + err.message);
+  if (!response.ok) {
+    throw new Error('Gagal kirim ke API. Status: ' + response.status);
   }
+
+  alert('Berhasil subscribe!');
 }
+
 
 export async function unsubscribeUser() {
   const registration = await navigator.serviceWorker.ready;

@@ -1,10 +1,14 @@
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/public/service-worker.js')
-      .then(reg => console.log('Service Worker registered:', reg.scope))
-      .catch(err => console.error('Service Worker failed:', err));
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('/service-worker.js');
+      console.log('✅ Service Worker registered:', reg);
+    } catch (err) {
+      console.error('❌ SW registration failed:', err);
+    }
   });
 }
+
 
 import { subscribeUser } from './utils/pushManager'
 import '../../node_modules/leaflet/dist/leaflet.css'

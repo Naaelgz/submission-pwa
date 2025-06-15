@@ -1,4 +1,4 @@
-import { showFormattedDate } from './utils'
+import { showFormattedDate } from './utils';
 
 export const generateStoriesCard = ({
   id,
@@ -8,10 +8,12 @@ export const generateStoriesCard = ({
   createdAt,
   lat,
   lon,
-
 }) => {
   return `
-    <div tabindex="0" class="story-card" data-reportid="${id}">
+    <div tabindex="0" class="story-card" 
+         data-id="${id}" 
+         data-lat="${lat}" 
+         data-lon="${lon}">
       <img class="story-card__image" src="${photoUrl}" alt="${name}">
       <div class="story-card__body">
         <div class="story-card__main">
@@ -28,5 +30,5 @@ export const generateStoriesCard = ({
         </div>
       </div>
     </div>
-  `
-}
+  `;
+};
