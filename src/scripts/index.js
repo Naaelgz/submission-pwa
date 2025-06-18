@@ -1,15 +1,3 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const reg = await navigator.serviceWorker.register('/service-worker.js');
-      console.log('✅ Service Worker registered:', reg);
-    } catch (err) {
-      console.error('❌ SW registration failed:', err);
-    }
-  });
-}
-
-
 import { subscribeUser } from './utils/pushManager'
 import '../../node_modules/leaflet/dist/leaflet.css'
 import '../styles/styles.css'
@@ -20,6 +8,9 @@ import '../styles/pages/create-story-page.css'
 
 import App from './pages/app'
 import Camera from './utils/camera'
+
+import { registerSW } from 'virtual:pwa-register';
+registerSW();
 
 document.addEventListener('DOMContentLoaded', async () => { 
   let app = new App({
@@ -44,3 +35,5 @@ document.addEventListener('DOMContentLoaded', () => {
     subscribeUser()
   })
 })
+
+

@@ -1,18 +1,47 @@
-// vite.config.js (ESM style)
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/',
-  root: resolve('src'),
-  publicDir: resolve('src', 'public'),
-  build: {
-    outDir: resolve('dist'),
-    emptyOutDir: true,
-  },
-  resolve: {
-    alias: {
-      '@': resolve('src'),
-    },
-  },
+  plugins: [
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      manifest: {
+        name: 'Qwerty App',
+        short_name: 'Qwerty',
+        description: 'A simple PWA app for story saving',
+        theme_color: '#000000',
+        background_color: '#ffffff',
+        display: 'standalone',
+        start_url: '/',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          }
+        ]
+      },
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/story-api\.dicoding\.dev\/v1\//,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'story-api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 86400 
+              }
+            }
+          }
+        ]
+      }
+    })
+  ]
 });
