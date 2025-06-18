@@ -30,13 +30,13 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/story-api\.dicoding\.dev\/v1\//,
-            handler: 'NetworkFirst',
+             urlPattern: /^https:\/\/story-api\.dicoding\.dev\/.*\.(png|jpg|jpeg|gif|webp)$/,
+            handler: 'CacheFirst',
             options: {
-              cacheName: 'story-api-cache',
+              cacheName: 'external-images',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 86400 
+                maxAgeSeconds: 7 * 24 * 60 * 60, 
               }
             }
           }
