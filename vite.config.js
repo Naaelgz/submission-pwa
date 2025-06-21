@@ -2,36 +2,40 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: 'index.html', 
+    },
+  },
   plugins: [
     VitePWA({
       strategies: 'injectManifest',
-      srcDir: '.',
-      filename: 'service-worker.js', 
-      registerType: 'autoUpdate',
+      srcDir: '.',                     
+      filename: 'sw.js',               
       injectManifest: {
-        swSrc: 'sw-base.js', 
+        swSrc: 'sw-base.js',            
       },
+      registerType: 'autoUpdate',
       manifest: {
         name: 'Qwerty App',
         short_name: 'Qwerty',
-        description: 'A simple PWA app for story saving',
-        theme_color: '#000000',
-        background_color: '#ffffff',
-        display: 'standalone',
         start_url: '/',
+        display: 'standalone',
+        background_color: '#ffffff',
+        theme_color: '#000000',
         icons: [
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
-    })
-  ]
+            type: 'image/png',
+          },
+        ],
+      },
+    }),
+  ],
 });
