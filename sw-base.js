@@ -1,18 +1,10 @@
-// service-worker.js
-
 self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
-
   let data = {};
-
   if (event.data) {
     try {
       data = event.data.json();
-    } catch (e) {
-      data = {
-        title: 'Qwerty Notification',
-        body: event.data.text(),
-      };
+    } catch {
+      data = { title: 'Qwerty Notification', body: event.data.text() };
     }
   }
 
@@ -30,10 +22,7 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  console.log('[Service Worker] Notification click Received.');
-
   event.notification.close();
-
   event.waitUntil(
     clients.openWindow(event.notification.data || '/')
   );
