@@ -4,11 +4,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   plugins: [
     VitePWA({
-      strategies: 'injectManifest',
-      srcDir: '.',                  
-      filename: 'service-worker.js', 
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      strategies: 'injectManifest',
+      injectManifest: {
+        swSrc: 'src/pwa/service-worker.js',     
+        swDest: 'service-worker.js'        
+      },
       manifest: {
         name: 'Qwerty App',
         short_name: 'Qwerty',
@@ -29,10 +30,7 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
-      },
-      injectManifest: {
-        swSrc: 'service-worker.js', 
-      },
+      }
     })
   ]
 });

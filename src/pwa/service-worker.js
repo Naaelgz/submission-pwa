@@ -36,3 +36,6 @@ self.addEventListener('notificationclick', function(event) {
     clients.openWindow(event.notification.data || '/')
   );
 });
+
+self.__WB_MANIFEST
+
