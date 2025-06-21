@@ -4,6 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   plugins: [
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: '.',                  
+      filename: 'service-worker.js', 
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
@@ -27,21 +30,9 @@ export default defineConfig({
           }
         ]
       },
-      workbox: {
-        runtimeCaching: [
-          {
-             urlPattern: /^https:\/\/story-api\.dicoding\.dev\/.*\.(png|jpg|jpeg|gif|webp)$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'external-images',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 7 * 24 * 60 * 60, 
-              }
-            }
-          }
-        ]
-      }
+      injectManifest: {
+        swSrc: 'service-worker.js', 
+      },
     })
   ]
 });
